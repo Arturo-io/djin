@@ -13,19 +13,28 @@ module Djin
 
     def execute
       manifest.verify
+      pandoc.execute
     end
 
     private
+    def pandoc
+      @pandoc ||= Djin::Pandoc.new(base_path, manifest.options)
+    end
+
     def manifest
       @manifest ||= Djin::Manifest.new(manifest_path)
     end
 
     def local_path
-      repository.repo.path
+      File.expand_path("#{repository.repo.path}/..")
+    end
+
+    def base_path
+      "#{local_path}/#{base}"
     end
 
     def manifest_path
-      "#{local_path}/#{base}/arturo.yml"
+      "#{base_path}/arturo.yml"
     end
 
   end

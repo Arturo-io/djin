@@ -19,7 +19,8 @@ describe Djin::Manifest do
   describe '#options' do
     it 'loads up options from the YAML file' do
       instance = subject.new(fixture_path('manifests/valid_options.yml'))  
-      expect(instance.options).to eq({"title" => 'Some title'})
+      expect(instance.options).to eq({"title" => 'Some title',
+        "formats" => ["html", "pdf"]})
     end
   end
 
@@ -32,6 +33,11 @@ describe Djin::Manifest do
     it 'throws exception on invalid options' do
       instance = subject.new(fixture_path('manifests/invalid_options.yml'))  
       expect { instance.verify }.to raise_error(Djin::InvalidManifestOption)
+    end
+
+    it 'verifies output_formats' do
+      instance = subject.new(fixture_path('manifests/missing_formats.yml'))  
+      expect { instance.verify }.to raise_error(Djin::MissingFormats)
     end
   end
 

@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency("rugged", "~> 0.21")
+  s.add_dependency("activesupport", "~> 4.1")
 
   s.add_development_dependency("pry")
   s.add_development_dependency("rake")

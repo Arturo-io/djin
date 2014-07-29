@@ -3,6 +3,7 @@ require 'yaml'
 module Djin
   class InvalidManifestOption < StandardError;end
   class MissingManifest       < StandardError;end
+  class MissingFormats        < StandardError;end
 
   class Manifest
     attr_reader :manifest_path, :options
@@ -14,6 +15,7 @@ module Djin
 
     def verify
       validate_options
+      validate_formats
     end
 
     def options
@@ -36,8 +38,12 @@ module Djin
       end
     end
 
+    def validate_formats
+      raise MissingFormats unless options.keys.include?("formats")
+    end
+
     def valid_options
-      %w(title)
+      %w(title formats pages)
     end
   end
 end

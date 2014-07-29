@@ -18,6 +18,19 @@ describe Djin::Document do
 
   end
 
+  describe 'sample doc' do
+    it 'creates a sample document' do
+      @instance = subject.new(remote: remote, token: token)
+      @instance.clone
+
+      @instance.base = 'simple_document'
+      output = @instance.execute
+      expect(output.count).to eq(1)
+
+      expect(File.exists?(output.first)).to eq(true)
+    end
+  end
+
   context 'single clone' do
     before do
       @instance = subject.new(remote: remote, token: token)
@@ -31,10 +44,20 @@ describe Djin::Document do
       end
 
       it 'verifies the manifest' do
-        double = double("Djin::Manifest")
+        double = double("Djin::Manifest").as_null_object
         
         allow(@instance).to receive(:manifest).and_return(double)
         expect(double).to   receive(:verify)
+        @instance.execute
+      end
+
+      it 'sends the command to pandoc' do
+        double = double("Djin::Manifest").as_null_object
+        allow(@instance).to receive(:manifest).and_return(double)
+        expect(double).to   receive(:options).and_return({pages: []})
+
+        expect(Djin::Pandoc).to receive(:new).with(anything, {pages: []}).and_return(double)
+
         @instance.execute
       end
 
