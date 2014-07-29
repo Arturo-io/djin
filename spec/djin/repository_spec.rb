@@ -26,6 +26,12 @@ describe Djin::Repository do
       instance = subject.new(remote: remote, token: token)
       expect(instance.send(:location)).to eq(expected)
     end
+
+    it 'returns a public url' do
+      expected = "https://github.com/Arturo-io/examples.git"
+      instance = subject.new(remote: remote)
+      expect(instance.send(:location)).to eq(expected)
+    end
   end
 
   describe '#clone' do

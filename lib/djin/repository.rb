@@ -18,7 +18,8 @@ module Djin
 
     private
     def location
-      "https://#{token}:x-oauth-basic@#{remote}"
+      return "https://#{token}:x-oauth-basic@#{remote}" if token
+      "https://#{remote}"
     end
 
     def temp_dir
