@@ -11,6 +11,15 @@ describe Djin::Pandoc do
     end
   end
 
+  describe '#errors' do
+    it 'returns errors' do
+      instance = subject.new(".", pages: ['1.md', '2.md'], formats: ["html"])
+      instance.execute
+
+      expect(instance.errors).not_to be_empty
+    end
+  end
+
   describe '#execute' do
     it 'sends the system command' do
       instance = subject.new(".", pages: ['1.md', '2.md'], formats: ["html"])
@@ -38,6 +47,5 @@ describe Djin::Pandoc do
       expect(instance).to receive(:system)
       expect(instance.execute.first).to match('output.html')
     end
-
   end
 end

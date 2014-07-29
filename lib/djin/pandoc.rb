@@ -1,6 +1,9 @@
+require 'open3'
+
 module Djin
   class Pandoc
-    attr_reader :options, :base_path
+    attr_reader :options, :base_path, :errors
+
 
     def initialize(base_path, options = {}) 
       @base_path = base_path
@@ -24,7 +27,9 @@ module Djin
       input_files   = options[:pages].join(" ")
       output_file   = "--output=#{output}"
 
-      system("pandoc", input_files, output_file)
+      _stdin, _stdout, stderr = Open3.popen3("pandoc #{input_files} #{output_file}")
+      @errors = stderr.readlines
+
       "#{Dir.pwd}/#{output}"
     end
   end
