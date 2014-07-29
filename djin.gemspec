@@ -21,8 +21,9 @@ Gem::Specification.new do |s|
   s.rdoc_options  = ["--charset=UTF-8"]
 
 
-  #s.add_dependency("padrino-core", ">= 0.11")
+  s.add_dependency("rugged", "~> 0.21")
 
+  s.add_development_dependency("pry")
   s.add_development_dependency("rake")
   s.add_development_dependency("rspec")
   s.add_development_dependency("rack-test", ">= 0.5.0")
