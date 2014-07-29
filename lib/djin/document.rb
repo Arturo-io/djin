@@ -1,5 +1,4 @@
 module Djin
-  class MissingManifest < StandardError; end
   class Document
     attr_reader   :repository
     attr_accessor :base
@@ -8,22 +7,26 @@ module Djin
       @repository = Repository.new(params)
     end
 
-    def execute
-      check_missing_manifest
-    end
-
     def clone
       repository.clone
     end
 
+    def execute
+      manifest.verify
+    end
+
     private
+    def manifest
+      @manifest ||= Djin::Manifest.new(manifest_path)
+    end
+
     def local_path
       repository.repo.path
     end
 
-    def check_missing_manifest
-      return true if File.exists?("#{local_path}/#{base}/arturo.yml")
-      raise Djin::MissingManifest, "arturo.yml could not be found in the project"
+    def manifest_path
+      "#{local_path}/#{base}/arturo.yml"
     end
+
   end
 end

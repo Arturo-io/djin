@@ -24,13 +24,20 @@ describe Djin::Document do
       @instance.clone
     end
 
-
     describe '#execute' do
       it 'verifies a manifest exists' do
         @instance.base = "missing_manifest"
         expect { @instance.execute }.to raise_error(Djin::MissingManifest)
       end
-    end
 
+      it 'verifies the manifest' do
+        double = double("Djin::Manifest")
+        
+        allow(@instance).to receive(:manifest).and_return(double)
+        expect(double).to   receive(:verify)
+        @instance.execute
+      end
+
+    end
   end 
 end
