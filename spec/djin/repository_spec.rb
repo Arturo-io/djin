@@ -20,19 +20,6 @@ describe Djin::Repository do
     end
   end
 
-  describe '#token' do
-    it 'returns an oauth url' do
-      expected = "https://666ea91081f3c548b5257688dd4353c3202124f6:x-oauth-basic@github.com/Arturo-io/examples.git"
-      instance = subject.new(remote: remote, token: token)
-      expect(instance.send(:location)).to eq(expected)
-    end
-
-    it 'returns a public url' do
-      expected = "https://github.com/Arturo-io/examples.git"
-      instance = subject.new(remote: remote)
-      expect(instance.send(:location)).to eq(expected)
-    end
-  end
 
   describe '#clone' do
     it 'can create a clone' do
@@ -43,6 +30,22 @@ describe Djin::Repository do
         repo = instance.clone
         expect(repo).not_to be_nil
         expect(File.exists?("#{dir}/README.md")).to eq(true)
+      end
+    end
+  end
+
+  context 'private specs' do
+    describe '#location' do
+      it 'returns an oauth url' do
+        expected = "https://666ea91081f3c548b5257688dd4353c3202124f6:x-oauth-basic@github.com/Arturo-io/examples.git"
+        instance = subject.new(remote: remote, token: token)
+        expect(instance.send(:location)).to eq(expected)
+      end
+
+      it 'returns a public url' do
+        expected = "https://github.com/Arturo-io/examples.git"
+        instance = subject.new(remote: remote)
+        expect(instance.send(:location)).to eq(expected)
       end
     end
   end
