@@ -1,0 +1,2 @@
+require 'djin/version'
+
