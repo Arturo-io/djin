@@ -27,7 +27,7 @@ module Djin
     end
 
     def required_params
-      %i(remote)
+      [:remote]
     end
 
     def verify_init_params(params)
